@@ -20,4 +20,15 @@ layout: default
 
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
+  <div id="instafeed"></div>
+
+  <script type="text/javascript">
+    var feed = new Instafeed({
+      get: 'tagged',
+      tagName: 'awesome',
+      clientId: '9b4073eaf2db44768bdf9e7eca845745'
+    });
+    feed.run();
+  </script>
+
 </div>
