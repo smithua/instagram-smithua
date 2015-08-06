@@ -23,12 +23,12 @@ layout: default
   <div id="instafeed"></div>
 
   <script type="text/javascript">
-    var feed = new Instafeed({
-      get: 'tagged',
-      tagName: 'awesome',
-      clientId: '9b4073eaf2db44768bdf9e7eca845745'
-    });
-    feed.run();
+      var userFeed = new Instafeed({
+          get: 'user',
+          userId: 33172805,
+          accessToken: '33172805.467ede5.7ffb4e00d51c49d794b8f2ef1176676e'
+      });
+      userFeed.run();
   </script>
 
 </div>
