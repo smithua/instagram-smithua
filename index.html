@@ -3,7 +3,57 @@ layout: default
 ---
 
 <div class="home">
+<style type="text/css">
+  .site-header {
+    position: relative;
+    top: -100px;
+    opacity: 0;
+  }
 
+  .site-title {
+    opacity: 0;
+    position: relative;
+    left: -100px;
+  }
+</style>
+
+<div id="instafeed" class="instafeed-container" style="position: relative;"></div>
+<div id="load-more">MORE</div>
+
+
+<script type="text/javascript">
+    // grab out load more button
+    var loadButton = document.getElementById('load-more'),
+
+        feed = new Instafeed({
+          get: 'user',
+          userId: 33172805,
+          accessToken: '141970.467ede5.edbc9c37472d41b790e1db8948793f11',
+          resolution: 'standard_resolution',
+          limit: '5',
+          // template: "<a href='{{link}}'><img src='{{image}}' /></a>",
+          // every time we load more, run this function
+          after: function() {
+            // disable button if no more results to load
+            if (!this.hasNext()) {
+              loadButton.setAttribute('disabled', 'disabled');
+            }
+          },
+        });
+
+    // bind the load more button
+    loadButton.addEventListener('click', function() {
+      feed.next();
+    });
+
+    // run our feed!
+    feed.run();
+
+
+
+    TweenLite.to(".site-header", 1, {opacity: "1", top: "0", ease:Power4.easeInOut, delay:1});
+    TweenLite.to(".site-title", 1, {opacity: "1", left: "0", ease:Power4.easeInOut, delay:2});
+</script>
   <!-- <h1 class="page-heading">Posts</h1> -->
 
 <!--   <ul class="post-list">
@@ -19,19 +69,4 @@ layout: default
   </ul> -->
 
   <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p> -->
-  <div id="instafeed" class="instafeed-container"></div>
-  <script type="text/javascript">
-      var userFeed = new Instafeed({
-          get: 'user',
-          userId: 33172805,
-          // get: 'popular',
-          // tagName: 'awesome',
-          accessToken: '33172805.467ede5.7ffb4e00d51c49d794b8f2ef1176676e',
-          resolution: 'standard_resolution',
-          limit: '5',
-          // template: '<a class="animation" href="{{link}}"><img src="{{image}}" /></a>'
-      });
-      userFeed.run();
-  </script>
-
 </div>

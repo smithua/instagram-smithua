@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="/js/instafeed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- // <script src="http://www.ssorallen.com/jquery-scrollstop/jquery.scrollstop.js"></script> -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
+</head>
+<body class="body" id="body">
+<div class="home">
+<style type="text/css">
+  .insta-cont {
+    position: relative;
+    top: -100px;
+    opacity: 0;
+  }
+  .insta-link {
+    position: relative;
+    /*top: -40px;*/
+    /*opacity: 0;*/
+  }
+</style>
+
+<div class="insta-cont">
+    <div id="instafeed" class="instafeed-container" style="position: relative;"></div>
+    <div id="load-more">MORE</div>
+</div>
+
+<script type="text/javascript">
+    // grab out load more button
+    var loadButton = document.getElementById('load-more'),
+
+        feed = new Instafeed({
+          get: 'user',
+          userId: 33172805,
+          accessToken: '141970.467ede5.edbc9c37472d41b790e1db8948793f11',
+          resolution: 'standard_resolution',
+          limit: '5',
+          template: "<a class='insta-link' href='{{link}}'><img src='{{image}}' /></a>",
+          // every time we load more, run this function
+          after: function() {
+            // disable button if no more results to load
+            if (!this.hasNext()) {
+              loadButton.setAttribute('disabled', 'disabled');
+            }
+          },
+        });
+
+    // bind the load more button
+    loadButton.addEventListener('click', function() {
+      feed.next();
+    });
+
+    // run our feed!
+    feed.run();
+
+
+    idleTimer = null;
+    idleState = false;
+    idleWait = 200;
+
+    (function ($) {
+
+        $(document).ready(function () {
+
+            $('*').bind('keydown scroll', function () {
+
+                clearTimeout(idleTimer);
+
+                if (idleState == true) {
+                    if ($(window).scrollTop() >= (($(document).height() - $(window).height())*0.7)) {
+                        if (feed.hasNext()) {
+                          feed.next();
+                        }
+                    // Reactivated event
+                    }
+                }
+
+                idleState = false;
+
+                idleTimer = setTimeout(function () {
+
+                    // Idle Event
+                    if ($(window).scrollTop() >= (($(document).height() - $(window).height())*0.7)) {
+                        if (feed.hasNext()) {
+                          feed.next();
+                        }
+                    }
+
+                    idleState = true; }, idleWait);
+            });
+
+            $("body").trigger("mousemove");
+
+        });
+    }) (jQuery)
+
+    TweenLite.to(".insta-cont", 1, {opacity: "1", top: "0", ease:Power4.easeInOut, delay:1});
+    TweenLite.to(".insta-link", 1, {opacity: "1", top: "0", ease:Power4.easeInOut, delay:1});
+</script>
+</div>
+</body>
+</html>
